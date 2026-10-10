@@ -120,3 +120,54 @@ function loadNotes() {
 function saveNotes() {
   localStorage.setItem("quicknotes", JSON.stringify(notes));
 }
+
+function addNote(text, category) {
+  // ... validation checks ...
+  notes.unshift(newNote);
+  saveNotes(); // <--- ADD THIS
+  render();
+  // ...
+}
+
+function deleteNote(id) {
+  notes = notes.filter(note => note.id !== id);
+  saveNotes(); // <--- ADD THIS
+  render();
+}
+
+loadNotes();
+render();
+
+const searchInput = document.getElementById("search-input");
+
+function render() {
+  notesList.innerHTML = "";
+  
+  // ADD: Filter logic
+  const query = searchInput.value.trim().toLowerCase();
+  const filteredNotes = notes.filter(note => 
+    note.text.toLowerCase().includes(query)
+  );
+
+  // ... [Keep your existing counter message block here] ...
+
+  // ADD: Empty search state check
+  if (filteredNotes.length === 0 && notes.length > 0) {
+    const li = document.createElement("li");
+    li.textContent = "No notes match your search.";
+    li.style.textAlign = "center";
+    li.style.color = "#6b7280";
+    li.style.padding = "1rem";
+    notesList.appendChild(li);
+    return;
+  }
+
+  // CHANGE: Loop through filteredNotes instead of notes
+  filteredNotes.forEach(note => {
+    // ... [Keep your existing card creation logic] ...
+  });
+}
+
+searchInput.addEventListener("input", () => {
+  render();
+});

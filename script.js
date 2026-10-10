@@ -105,3 +105,18 @@ noteForm.addEventListener("submit", (e) => {
 });
 
 render();
+
+function loadNotes() {
+  const stored = localStorage.getItem("quicknotes");
+  if (stored) {
+    try {
+      notes = JSON.parse(stored);
+    } catch (e) {
+      notes = [];
+    }
+  }
+}
+
+function saveNotes() {
+  localStorage.setItem("quicknotes", JSON.stringify(notes));
+}
